@@ -1,0 +1,17 @@
+.ipynb_checkpoints/
+.vscode/settings.json
+*_images/
+Colab*/
+pretrained*/
+__*/
+.*/
+*.rar
+SIH_COLAB.zip
+*.zip
+Compressed_data
+IDD_*/
+front*/
+temp_video.mp4
+TF1/trained_*/
+TF2/D*/
+RESET/
