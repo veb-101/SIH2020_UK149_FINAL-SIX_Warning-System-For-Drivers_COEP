@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.here.android.example.guidance">
+
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <!--<uses-permission android:name="android.permission.GET_ACCOUNTS" />-->
+    <!--<uses-permission android:name="android.permission.READ_PROFILE" />-->
+    <!--<uses-permission android:name="android.permission.READ_CONTACTS" />-->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme"
+        tools:node="replace">
+
+        <!-- <activity android:name=".SourceDest"> -->
+        <!-- <activity android:name=".SourceDest"></activity> -->
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyDewrtBMzjReB9aqujJyxW8y22TQ2o9afQ" />
+
+        <!-- <activity -->
+        <!-- android:name=".splash_activity" -->
+        <!-- android:label="@string/title_activity_main"> -->
+        <!-- <intent-filter> -->
+        <!-- <action android:name="android.intent.action.MAIN" /> -->
+
+
+        <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+        <!-- </intent-filter> -->
+        <!-- </activity> -->
+        <!--<activity android:name=".MapFragmentView3">-->
+            <!--<intent-filter>-->
+                <!--<action android:name="android.intent.action.MAIN" />-->
+
+                <!--<category android:name="android.intent.category.LAUNCHER" />-->
+            <!--</intent-filter>-->
+            <activity
+
+                android:theme="@style/Theme.AppCompat.NoActionBar"
+                android:name=".MapFragmentView3"
+                android:label="Driver Safety">
+                <intent-filter>
+                    <action android:name="android.intent.action.MAIN" />
+
+                    <category android:name="android.intent.category.LAUNCHER" />
+                </intent-filter>
+            </activity>
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.intent.action.MAIN" /> -->
+
+
+            <!-- <category android:name="android.intent.category.DEFAULT" /> -->
+            <!-- </intent-filter> -->
+<!--        <activity android:name=".splash_activity"/>-->
+
+        <activity android:name="com.google.android.libraries.places.widget.AutocompleteActivity"/>
+
+        <!--
+        Developers should put application credentials here.To obtain them, please register the application
+        at https://developer.here.com/develop/mobile-sdks
+        -->
+        <meta-data
+            android:name="com.here.android.maps.appid"
+            android:value="XA6EHyvKFP96ltNpLaYm" />
+        <meta-data
+            android:name="com.here.android.maps.apptoken"
+            android:value="Pv66ggXS5mUZPizGkfjbOw" />
+        <meta-data
+            android:name="com.here.android.maps.license.key"
+            android:value="QtpXcdYvSCBMoWo4W3jags7Iy7/sbdfB9IsAOAACrsB144tCT1JbkPBrTG4dFHAELnxOa8v4/lC3YL2lmeGy2Ocs/PF6JNCo1WuDAbvnd4HVcWPP3EhG/96m+dWuoLyPaM4RjLtilxXOZKCUEVHo7ykSLxkZX3ScAQ/DgYuJhIRIRzCfhFm4tBpVyFZuNWfvjfFU+EVYHxJTb/tPraJb+Qvjn1lq++l7O6aNLVNWBp3KH15RZRlQ0C9nH9ms95JuZBaFLg5HBAm6esynaaTx4AF02OszEpnqAIu6tEfbjMfb6up3wZAa04oN1/LTQlmO/6+3jrNYze3+PHzTs/JVcs5SowERXxLPgFonW93uoRDM9cYNHG4rJtevFjx0DQFwY6/bxZ/ZXG18rsTaNvyNT/VXgdITa2teC8t1gqEnTAZUTISTVpr5y/qxeqqxyphJntIKzBzKXvqson8QAxrS7AporxjmUuxyFzytkz8YNp5t9EOl6RnmLVNsEGYAYvekAKkq02svAVIlErD++qAwZlttgDU7HK+TNuv3N80HMq+cjjew3pJbL/yEd8PnmsaEFAaaDGuxHxcYGagzzv11VKCOBGhq/RPaNVAAofmIse8+u3QCqj4HcG6dVR1AULU2MaKIE5sRg2AoGxNiG7obLyfJUkqz8HubTjuc444u93Q=" />
+        <!--
+            Nuance Credentials
+            If you need credentials, then you should get it here: https://developer.nuance.com/public/index.php?task=home
+        -->
+        <meta-data
+            android:name="nuance.app.key"
+            android:value="04d60b8c7e48f846501b11cdd372a0c40773d2d8deee523661a0c92e3dd89341ae9ecd2de7c57337e18504b4f7a478fe174ad6f538282b9ac8f4c805cd5c467b" />
+        <meta-data
+            android:name="nuance.app.id"
+            android:value="NMDPTRIAL_lobopranayk9_gmail_com20180212103739" />
+        <meta-data
+            android:name="nuance.app.host"
+            android:value="sslsandbox-nmdp.nuancemobility.net" />
+        <meta-data
+            android:name="nuance.app.port"
+            android:value="443" />
+
+        <service
+            android:name="com.here.android.mpa.service.MapService"
+            android:exported="true"
+            android:label="HereMapService"
+            android:process="global.Here.Map.Service.v3">
+            <intent-filter>
+                <action android:name="com.here.android.mpa.service.MapService.v3" />
+            </intent-filter>
+        </service>
+
+    </application>
+
+</manifest>
