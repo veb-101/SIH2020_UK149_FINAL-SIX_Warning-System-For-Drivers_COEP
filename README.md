@@ -6,17 +6,20 @@ Final Six sih2020 repository for progress tracking
 
 ### Tracking Progress
 
-* Mobile Detection:
-  * Classification: 
+* **Mobile Detection:**
+  * _Classification:_ 
     1) Added data CSVs.
     2) Added trainig notebook for speed sign classification
     3) Added Converted tflite model
-  * Detection:
+  * _Detection:_
     1) Added Previously tested models, configs
     2) Added Training notebooks.
-  * Demo Files:
+  * _Demo Files:_
     * PC Demo:
-      [![Image PC Demo](PC_Detection_Demo.jpg)](https://youtu.be/RNnBfowMxw8)
+      
+      [![PC Demo](PC_Detection_Demo.jpg)](https://youtu.be/RNnBfowMxw8)
+
 
     * Mobile Object Detection:
-      [![Image PC Demo](Mobile_Detection_Demo.jpg)](https://youtu.be/72QX63DfJpw)
+      
+      [![Mobile Demo](Mobile_Detection_Demo.jpg)](https://youtu.be/72QX63DfJpw)
