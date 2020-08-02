@@ -7,9 +7,7 @@
     xmlns:tools="http://schemas.android.com/tools"
 >
 
-    <androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:sothree="http://schemas.android.com/tools"
+    <androidx.drawerlayout.widget.DrawerLayout
         android:id="@+id/drawer_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -141,27 +139,8 @@
 
 
                 </com.google.android.material.appbar.AppBarLayout>
-                <Button
-                    android:id="@+id/download"
-                    style="@android:style/Widget.Button"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="30dp"
-                    android:layout_marginLeft="270dp"
-                    android:text="Voice"
-                    android:background="@color/white"
-                    android:textColor="@color/blue"
-                    android:visibility="gone"/>
 
-                <Button
-                    android:id="@+id/create"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Go"
-                    android:layout_marginTop="100dp"
-                    android:layout_marginLeft="270dp"
-                    android:background="@color/white"
-                    android:textColor="@color/blue"/>
+
 
                 <Button
                     android:id="@+id/create1"
@@ -184,9 +163,6 @@
                     android:textColor="@color/blue"/>
 
 
-
-
-
                 <Button
                     android:id="@+id/navigation"
                     android:layout_width="wrap_content"
@@ -199,6 +175,8 @@
 
 
 
+
+
                 <Button
                     android:id="@+id/simulation"
                     android:layout_width="wrap_content"
@@ -208,6 +186,17 @@
                     android:layout_marginLeft="270dp"
                     android:background="@color/white"
                     android:textColor="@color/blue"/>
+
+                <Button
+                    android:id="@+id/personCount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Person Count"
+                    android:layout_marginTop="80dp"
+                    android:layout_marginLeft="270dp"
+                    android:background="@color/white"
+                    android:textColor="@color/blue"/>
+
                 <!--<Button-->
                     <!--android:id="@+id/lastmile"-->
                     <!--android:layout_width="wrap_content"-->
@@ -225,6 +214,16 @@
                     <!--android:layout_width="match_parent"-->
                     <!--android:layout_height="match_parent"-->
                     <!--sothree:context="com.example.codingmountain.googlemap_clone_bottomsheetlayout.MapsActivity" />-->
+
+<!--                <Button-->
+<!--                    android:id="@+id/addplace"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_marginLeft="270dp"-->
+<!--                    android:layout_marginTop="500dp"-->
+<!--                    android:background="@color/white"-->
+<!--                    android:text="Add place"-->
+<!--                    android:textColor="@color/blue" />-->
 
                 <fragment
                     android:id="@+id/mapfragment"
