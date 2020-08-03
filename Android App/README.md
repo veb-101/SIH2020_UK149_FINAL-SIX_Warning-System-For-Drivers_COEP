@@ -1,4 +1,9 @@
 # Driver_Safety_Sih2020
 
-
-<img src="https://drive.google.com/file/d/1UjFoxo2PWaRMP09kqrVBJDZwVK0enigO/view?usp=sharing" />
+### Application Features
+  * _Detection:_    
+    1) Provide navigation
+    2) Get speed limit
+    3) Retrieve Current Speed
+    4) Location Recognition
+    5) Voice Alert
