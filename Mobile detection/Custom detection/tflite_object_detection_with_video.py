@@ -5,16 +5,54 @@ import time
 import cv2
 import re
 import numpy as np
-# from multiprocessing import Pipe
-# import multiprocessing
 
 
 def draw_image(image, results, labels, size):
+
+    FRAME_AREA = size[0] * size[1]
+    regions = size[0] // 3
+
+    left_xmin = 0
+    left_xmax = regions - 170
+
+    center_xmin = regions - 170 + 1
+    center_xmax = 2 * regions + 170
+
+    right_xmin = 2 * regions + 200 + 1
+    right_xmax = size[0]
+
+    # region 1
+    cv2.line(image, (regions - 200, 0),
+             (regions-200, size[1]), (255, 255, 255))
+
+    # region 2
+    cv2.line(image, (2 * regions + 200, 0),
+             (2 * regions+200, size[1]), (255, 255, 255))
+
+    personCenter_COUNT = 0
+    personAround_COUNT = 0
+
+    personCenter = False
+    personRight = False
+    personleft = False
+
+    VEHICLE_CURRENT_COUNT = 0
+
+    VEHICLECenter = False
+    VEHICLERight = False
+    VEHICLEleft = False
+    THRESHOLD_PERSON = 0.004
+    THRESHOLD_VEHICLE = 0.04
+
     # result_size = len(results)
     for idx, obj in enumerate(results):
-        # Prepare image for drawing
-        # draw = ImageDraw.Draw(Image.fromarray(image))
-        if labels[obj['class_id']] in ("car", "bus", "person"):
+
+        OBJECT = labels[obj['class_id']]
+
+        if OBJECT in ("person"):
+
+            isGreater = False
+
             # Prepare boundary box
             ymin, xmin, ymax, xmax = obj["bounding_box"]
 
@@ -22,10 +60,42 @@ def draw_image(image, results, labels, size):
             xmax = int(min(size[0], xmax * size[0]))
             ymin = int(max(1, ymin * size[1]))
             ymax = int(min(size[1], ymax * size[1]))
+            bboxAREA = (xmax-xmin) * (ymax-ymin)
 
+            OCCUPIED_AREA = bboxAREA / FRAME_AREA
+            # print(
+            # f"\rOCCUPIED_AREA: {OCCUPIED_AREA}, bboxAREA: {bboxAREA}", end="")
+
+            if OCCUPIED_AREA >= THRESHOLD_PERSON:
+                isGreater = True
+
+            bbcenter = (xmin + xmax)//2
+            if bbcenter <= left_xmax:
+                personleft = True
+            elif bbcenter > center_xmin and bbcenter <= center_xmax:
+                personCenter = True
+            else:
+                personRight = True
+
+            if personCenter:
+                if isGreater:
+                    cv2.rectangle(image, (xmin, ymin),
+                                  (xmax, ymax), (0, 0, 255), 2)
+                    personCenter_COUNT += 1
+                else:
+                    cv2.rectangle(image, (xmin, ymin),
+                                  (xmax, ymax), (0, 255, 0), 2)
+                # print("CENTER")
+            elif (personRight or personleft):  # safe
+                personAround_COUNT += 1
+                cv2.rectangle(image, (xmin, ymin),
+                              (xmax, ymax), (0, 255, 0), 2)
+                # print("AROUND")
+
+                # ==============================================
             # Draw rectangle to desired thickness
-            label = f"{labels[obj['class_id']]}: {round(obj['score'] * 100, 2)}%"
-            print(label)
+            label = f"{OBJECT}: {round(obj['score'] * 100, 2)}%"
+
             # break
             labelSize, baseLine = cv2.getTextSize(
                 label, cv2.FONT_HERSHEY_SIMPLEX, 0.7, 2
@@ -34,6 +104,7 @@ def draw_image(image, results, labels, size):
             label_ymin = max(
                 ymin, labelSize[1] + 10
             )
+
             cv2.rectangle(
                 image,
                 (xmin, label_ymin - labelSize[1] - 10),
@@ -41,6 +112,7 @@ def draw_image(image, results, labels, size):
                 (255, 255, 255),
                 cv2.FILLED,
             )  # Draw white box to put label text in
+
             cv2.putText(
                 image,
                 label,
@@ -50,7 +122,110 @@ def draw_image(image, results, labels, size):
                 (0, 0, 0),
                 2,
             )
-        cv2.imshow("Live Object Detection", image)
+            # ==============================================
+
+        if OBJECT in ("car", "bus"):
+
+            isGreater = False
+
+            # Prepare boundary box
+            ymin, xmin, ymax, xmax = obj["bounding_box"]
+
+            xmin = int(max(1, xmin * size[0]))
+            xmax = int(min(size[0], xmax * size[0]))
+            ymin = int(max(1, ymin * size[1]))
+            ymax = int(min(size[1], ymax * size[1]))
+
+            bboxAREA = (xmax-xmin) * (ymax-ymin)
+
+            OCCUPIED_AREA = bboxAREA / FRAME_AREA
+
+            if OCCUPIED_AREA >= THRESHOLD_VEHICLE:
+                isGreater = True
+
+            bbcenter = (xmin + xmax)//2
+
+            if bbcenter <= left_xmax:
+                VEHICLEleft = True
+            elif bbcenter > center_xmin and bbcenter <= center_xmax:
+                VEHICLECenter = True
+            else:
+                VEHICLERight = True
+
+            if VEHICLECenter:
+                if isGreater:
+                    cv2.rectangle(image, (xmin, ymin),
+                                  (xmax, ymax), (0, 0, 255), 2)
+                    VEHICLE_CURRENT_COUNT += 1
+                else:
+                    cv2.rectangle(image, (xmin, ymin),
+                                  (xmax, ymax), (0, 255, 0), 2)
+                # print("CENTER")
+            elif (VEHICLERight or VEHICLEleft):  # safe
+                # personAround_COUNT += 1
+                cv2.rectangle(image, (xmin, ymin),
+                              (xmax, ymax), (0, 255, 0), 2)
+
+                # Draw rectangle to desired thickness
+            label = f"{OBJECT}: {round(obj['score'] * 100, 2)}%"
+
+            # break
+            labelSize, baseLine = cv2.getTextSize(
+                label, cv2.FONT_HERSHEY_SIMPLEX, 0.7, 2
+            )
+
+            label_ymin = max(
+                ymin, labelSize[1] + 10
+            )
+
+            cv2.rectangle(
+                image,
+                (xmin, label_ymin - labelSize[1] - 10),
+                (xmin + labelSize[0], label_ymin + baseLine - 10),
+                (255, 255, 255),
+                cv2.FILLED,
+            )  # Draw white box to put label text in
+
+            cv2.putText(
+                image,
+                label,
+                (xmin, label_ymin - 7),
+                cv2.FONT_HERSHEY_SIMPLEX,
+                0.7,
+                (0, 0, 0),
+                2,
+            )
+
+        cv2.putText(
+            image,
+            f"PERSON CENTER: {personCenter_COUNT}",
+            (size[0] - 250, 100),
+            cv2.FONT_HERSHEY_SIMPLEX,
+            1,
+            (255, 255, 255),
+            2,
+        )
+
+        cv2.putText(
+            image,
+            f"PERSON Around: {personAround_COUNT}",
+            (size[0] - 250, 150),
+            cv2.FONT_HERSHEY_SIMPLEX,
+            1,
+            (255, 255, 255),
+            2,
+        )
+        cv2.putText(
+            image,
+            f"Vehicle: {VEHICLE_CURRENT_COUNT}",
+            (size[0] - 250, 150),
+            cv2.FONT_HERSHEY_SIMPLEX,
+            1,
+            (255, 255, 255),
+            2,
+        )
+
+    # cv2.imshow("Live Object Detection", image)
 
 
 def load_labels(path):
@@ -153,10 +328,18 @@ def main():
     interpreter.allocate_tensors()
     _, input_height, input_width, _ = interpreter.get_input_details()[
         0]["shape"]
-
+    # fps = 24
     # Initialize video stream
     cap = cv2.VideoCapture(args.video)
-    time.sleep(1)
+
+    width = int(cap.get(3))  # float
+    height = int(cap.get(4))
+
+    fourcc = cv2.VideoWriter_fourcc(*'XVID')
+    output = cv2.VideoWriter('both.avi',
+                             fourcc, 20.0, (width, height))
+
+    # time.sleep(1)
 
     while cap.isOpened():
         try:
@@ -167,13 +350,19 @@ def main():
             # Perform inference
             results = detect_objects(interpreter, input_data, args.threshold)
             # print(results)
-            width = cap.get(3)  # float
-            height = cap.get(4)  # float
+            width = int(cap.get(3))  # float
+            height = int(cap.get(4))  # float
 
             # print('width, height:', width, height)
             # print(frame.shape)
             # break
             draw_image(frame, results, labels, (width, height))
+            # split_screen()
+            # region 1
+
+            # cv2.imshow("Frame line", frame)
+
+            output.write(frame)
             # break
             if cv2.waitKey(5) & 0xFF == ord("q"):
                 # fps.stop()
@@ -183,7 +372,8 @@ def main():
 
     cv2.destroyAllWindows()
     cap.release()
-    time.sleep(2)
+    output.release()
+    # time.sleep(2)
 
 
 if __name__ == "__main__":
