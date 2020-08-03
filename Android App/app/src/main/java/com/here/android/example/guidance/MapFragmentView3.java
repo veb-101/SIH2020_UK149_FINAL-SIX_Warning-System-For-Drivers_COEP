@@ -23,6 +23,7 @@ import android.os.Handler;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.google.android.gms.maps.model.Circle;
 import com.google.android.libraries.places.api.Places;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import androidx.appcompat.app.AppCompatActivity;
@@ -199,6 +200,7 @@ public class MapFragmentView3 extends AppCompatActivity implements OnMapReadyCal
     public Button create1,create2,addplace;
     private Button simulation;
     private Button navigation;
+    private float cel;
     private Boolean isNavigation=false;
     private boolean firstPositionSet = false;
     private MapRoute currentRoute;
@@ -215,7 +217,9 @@ public class MapFragmentView3 extends AppCompatActivity implements OnMapReadyCal
     double a;
     String aaspeed;
     String hospital;
+    String weatherapi,temp;
     private TextToSpeech myTTS;
+    private TextView label1,label2,label3;
     double b;
     private MapMarker m_map_marker1;
     private MapMarker m_map_marker;
@@ -286,57 +290,6 @@ public class MapFragmentView3 extends AppCompatActivity implements OnMapReadyCal
         setContentView(R.layout.activity_main2);
 
 
-        ArrayList<String> ccc=new ArrayList<String>();
-        new CountDownTimer(40000, 10000) {
-
-            public void onTick(long millisUntilFinished) {
-
-                //here you can have your logic to set text to edittext
-
-
-                SharedPreferences sharedPreferences = getSharedPreferences("myKey", MODE_PRIVATE);
-
-
-                int value = sharedPreferences.getInt("value",0);
-
-
-                Log.d("pppp", String.valueOf(value));
-                String x=String.valueOf(value);
-                Log.d("pppp1",x);
-
-//    value=1;
-
-
-
-            }
-
-            public void onFinish() {
-//        count.setText(ccc);
-
-
-//        Map<String, Object> city = new HashMap<>();
-//        city.put("personCount", String.valueOf(sum40sec));
-////
-////
-//        db.collection("Sum").document("i4Wh7AMjCb8f45SVGyC1")
-//                .set(city)
-//                .addOnSuccessListener(new OnSuccessListener<Void>() {
-//                  @Override
-//                  public void onSuccess(Void aVoid) {
-//                    Log.d("TAG", "DocumentSnapshot successfully written!");
-//                  }
-//                })
-//                .addOnFailureListener(new OnFailureListener() {
-//                  @Override
-//                  public void onFailure(@NonNull Exception e) {
-//                    Log.w("TAG", "Error writing document", e);
-//                  }
-//                });
-
-
-            }
-
-        }.start();
 
 
         //texttospeech start
@@ -355,6 +308,11 @@ public class MapFragmentView3 extends AppCompatActivity implements OnMapReadyCal
 
         create1=(Button)findViewById(R.id.create1);
         create2=(Button)findViewById(R.id.create2);
+        label1=findViewById(R.id.label1);
+        label2=findViewById(R.id.label2);
+        label3=findViewById(R.id.label3);
+//        label4=findViewById(R.id.label4);
+
         simulation = (Button) findViewById(R.id.simulation);
         navigation = (Button) findViewById(R.id.navigation);
 //        addplace=(Button)findViewById(R.id.addplace);
@@ -392,6 +350,8 @@ public class MapFragmentView3 extends AppCompatActivity implements OnMapReadyCal
             @Override
             public void onClick(View v) {
                 isNavigation = false;
+
+
                 createMapMarker();
                 startRouting();
 
@@ -419,6 +379,9 @@ public class MapFragmentView3 extends AppCompatActivity implements OnMapReadyCal
 //
 //            }
 //        });
+
+
+
 
     }
 
@@ -507,7 +470,7 @@ public class MapFragmentView3 extends AppCompatActivity implements OnMapReadyCal
 
 
 
-                            map.setMapScheme(Map.Scheme.NORMAL_DAY);   // normal day mapscheme
+                            map.setMapScheme(Map.Scheme.CARNAV_NIGHT_GREY);   // normal day mapscheme
 
                             // traffic options
                             map.setTrafficInfoVisible(true);
@@ -531,6 +494,8 @@ public class MapFragmentView3 extends AppCompatActivity implements OnMapReadyCal
                             GeoPosition lkp = PositioningManager.getInstance().getLastKnownPosition();
                             if (lkp != null && lkp.isValid())
                                 map.setCenter(lkp.getCoordinate(), Map.Animation.NONE);
+                            new JsonTask2().execute("http://api.openweathermap.org/data/2.5/weather?lat="+lkp.getCoordinate().getLatitude()+"&lon="+lkp.getCoordinate().getLongitude()+"&appid=e525dd76adb0656026a5818dd695f708");
+//                            Log.d("strcurrspeed",strCurrentSpeed);
                             // for Navigation, you need to assign the map instance to navigation manager
                             NavigationManager.getInstance().setMap(map);
                         } else {
@@ -651,7 +616,7 @@ public class MapFragmentView3 extends AppCompatActivity implements OnMapReadyCal
 
 
 
-                            map.setMapScheme(Map.Scheme.NORMAL_DAY);   // normal day mapscheme
+                            map.setMapScheme(Map.Scheme.CARNAV_NIGHT_GREY);   // normal day mapscheme
 
                             // traffic options
                             map.setTrafficInfoVisible(true);
@@ -738,7 +703,7 @@ public class MapFragmentView3 extends AppCompatActivity implements OnMapReadyCal
             Button create1=(Button)findViewById(R.id.create1);
 
 
-            create1.setText("Current speed:\n"+strCurrentSpeed + "\n" + strUnits);
+            create1.setText(strCurrentSpeed);
             Log.d("aaujo451",strCurrentSpeed+" aana "+aaspeed);
 
             if(aaspeed != null)
@@ -1048,7 +1013,7 @@ public class MapFragmentView3 extends AppCompatActivity implements OnMapReadyCal
     private void startGuidance() {
         Log.i(TAG, "Start guidance...");
         // better visuals when switching to special car navigation map scheme
-        map.setMapScheme(Map.Scheme.CARNAV_DAY);
+        map.setMapScheme(Map.Scheme.CARNAV_NIGHT_GREY);
         map.setTilt(45);
         map.setZoomLevel(18);
 
@@ -1134,6 +1099,14 @@ public class MapFragmentView3 extends AppCompatActivity implements OnMapReadyCal
 
                     currentRoute = new MapRoute(list.get(0).getRoute());
                     map.addMapObject(currentRoute);
+                    MapCircle s=new MapCircle();
+                    s.setCenter(new GeoCoordinate(19.218842, 72.852055));
+                    s.setRadius(200);
+                    s.setFillColor(Color.argb(100,0,0,255));
+                    s.setLineColor(Color.rgb(255,0,0));
+
+                    map.addMapObject(s);
+
                     m_geoBoundingBox = list.get(0).getRoute().getBoundingBox();
                     map.zoomTo(m_geoBoundingBox, Map.Animation.LINEAR,
                             Map.MOVE_PRESERVE_ORIENTATION);
@@ -1149,7 +1122,7 @@ public class MapFragmentView3 extends AppCompatActivity implements OnMapReadyCal
     private void startGuidance2() {
         Log.i(TAG, "Start guidance...");
         // better visuals when switching to special car navigation map scheme
-        map.setMapScheme(Map.Scheme.CARNAV_DAY);
+        map.setMapScheme(Map.Scheme.CARNAV_NIGHT_GREY);
 
         map.setTilt(45);
         map.setZoomLevel(48);
@@ -1185,7 +1158,7 @@ public class MapFragmentView3 extends AppCompatActivity implements OnMapReadyCal
 
                 currentspeedvar[0] = currentspeedvar[0] + 2;
 
-                create1.setText("Current speed:\n"+ currentspeedvar[0]+" KM/H");
+                create1.setText(String.valueOf(currentspeedvar[0]));
 
 
             }
@@ -1193,9 +1166,6 @@ public class MapFragmentView3 extends AppCompatActivity implements OnMapReadyCal
             public void onFinish() {
 
 //                create1.setText("Current speed:\n");
-
-
-
 
             }
 
@@ -1210,6 +1180,7 @@ public class MapFragmentView3 extends AppCompatActivity implements OnMapReadyCal
                 // Do something after 5s = 5000ms
 //                create1.setText("Current speed:\n60km/h");
                 create1.setTextColor(Color.rgb(255,0,0));
+//                create1.settint(Color.rgb(255,0,0));
 
 //                toneGen1.startTone(ToneGenerator.TONE_DTMF_S, 20000);
 
@@ -1230,7 +1201,7 @@ public class MapFragmentView3 extends AppCompatActivity implements OnMapReadyCal
                 // Do something after 5s = 5000ms
 
 //                create1.setText("Current speed:\n40km/h");
-                create1.setTextColor(Color.rgb(0,0,255));
+                create1.setTextColor(Color.rgb(0,255,0));
 
 
 //                toneGen1.stopTone();
@@ -1239,9 +1210,41 @@ public class MapFragmentView3 extends AppCompatActivity implements OnMapReadyCal
 
                     public void onTick(long millisUntilFinished) {
 
-                        currentspeedvar1[0] = currentspeedvar1[0] - 1;
+                        currentspeedvar1[0] = currentspeedvar1[0] + 2;
 
-                        create1.setText("Current speed:\n"+ currentspeedvar1[0]+" KM/H");
+                        create1.setText(String.valueOf(currentspeedvar1[0]));
+
+                        if(currentspeedvar1[0] == 46)
+                        {
+                            create1.setTextColor(Color.rgb(255,255,255));
+                        }
+
+                        if(currentspeedvar1[0] == 54)
+                        {
+                            String words = "You are entering a hospital area.Please drive safely.";
+                            speakWords(words);
+
+                            new CountDownTimer(10000, 1000) {
+
+                                public void onTick(long millisUntilFinished) {
+
+                                    currentspeedvar1[0] = currentspeedvar1[0] - 2;
+
+                                    create1.setText(String.valueOf(currentspeedvar1[0]));
+
+
+
+                                }
+
+                                public void onFinish() {
+
+
+
+                                }
+
+                            }.start();
+
+                        }
 
 
                     }
@@ -1340,7 +1343,7 @@ public class MapFragmentView3 extends AppCompatActivity implements OnMapReadyCal
     private void startGuidanceNav() {
         Log.i(TAG, "Start guidance...");
         // better visuals when switching to special car navigation map scheme
-        map.setMapScheme(Map.Scheme.CARNAV_DAY);
+        map.setMapScheme(Map.Scheme.CARNAV_NIGHT_GREY);
         map.setTilt(45);
         map.setZoomLevel(18);
 
@@ -1442,10 +1445,9 @@ public class MapFragmentView3 extends AppCompatActivity implements OnMapReadyCal
 
 
         // better visuals when switching to special car navigation map scheme
-        map.setMapScheme(Map.Scheme.CARNAV_DAY);
+        map.setMapScheme(Map.Scheme.CARNAV_NIGHT_GREY);
         map.setTilt(45);
         map.setZoomLevel(18);
-
         // set guidance view to position with road ahead, tilt and zoomlevel was setup before manually
         // choose other update modes for different position and zoom behavior
         NavigationManager.getInstance().setMapUpdateMode(NavigationManager.MapUpdateMode.POSITION_ANIMATION);
@@ -1597,7 +1599,6 @@ public class MapFragmentView3 extends AppCompatActivity implements OnMapReadyCal
                         Log.d("aaspeed","hgfdfgh");
 //                salary = employee.getString("salary");
                         // set employee name and salary in TextView's
-
 //                employeeSalary.setText("Salary: "+salary);
 
                     } catch (JSONException e) {
@@ -1636,7 +1637,7 @@ public class MapFragmentView3 extends AppCompatActivity implements OnMapReadyCal
             }
 //            txtJson.setText(result);
 //            speed.setText(aaspeed);
-            create2.setText("SPEED LIMIT \n"+aaspeed+" KM/H");
+            create2.setText(String.valueOf(aaspeed));
             Log.d("aaujo1262",strCurrentSpeed+" aana "+aaspeed);
 
 
@@ -1691,7 +1692,7 @@ public class MapFragmentView3 extends AppCompatActivity implements OnMapReadyCal
                         {
                             JSONObject employee = userArray.getJSONObject(i);
                             hospital=employee.getJSONArray("resources").getJSONObject(0).getJSONArray("businessesAtLocation").getJSONObject(0).getJSONObject("businessInfo").get("entityName").toString();
-                            Log.d("qwertyuiop",hospital+aaspeed+strCurrentSpeed);
+                            Log.d("hospitalorSchool",hospital);
                         }
 
                         if(userArray.length() > 0)
@@ -1765,6 +1766,117 @@ public class MapFragmentView3 extends AppCompatActivity implements OnMapReadyCal
             if (pd.isShowing()){
                 pd.dismiss();
             }
+//            txtJson.setText(result);
+//            speed.setText(aaspeed);
+
+//            create2.setText("SPEED LIMIT \n"+aaspeed+" KM/H");
+//            Log.d("aaujo1262",strCurrentSpeed+" aana "+aaspeed);
+
+
+        }
+    }
+
+    private class JsonTask2 extends AsyncTask<String, String, String> {
+
+        protected void onPreExecute() {
+            super.onPreExecute();
+//
+//            pd = new ProgressDialog(MapFragmentView3.this);
+//            pd.setMessage("Please wait");
+//            pd.setCancelable(false);
+//            pd.show();
+        }
+
+        protected String doInBackground(String... params) {
+
+
+            HttpURLConnection connection = null;
+            BufferedReader reader = null;
+
+            try {
+                URL url = new URL(params[0]);
+                connection = (HttpURLConnection) url.openConnection();
+                connection.connect();
+
+
+                InputStream stream = connection.getInputStream();
+
+                reader = new BufferedReader(new InputStreamReader(stream));
+
+                StringBuffer buffer = new StringBuffer();
+                String line = "";
+
+                while ((line = reader.readLine()) != null) {
+                    buffer.append(line+"\n");
+                    Log.d("Response: ", "> " + line);   //here u ll get whole response...... :-)
+
+                    try {
+                        // get JSONObject from JSON file
+                        JSONObject obj = new JSONObject(line);
+
+                        JSONArray userArray = obj.getJSONArray("weather");
+                        JSONObject oo=obj.getJSONObject("main");
+
+                        temp=oo.getString("temp");
+
+//
+//                        int cel= (int) ((Integer.parseInt(temp) - 32)/1.8000);
+//
+//                        Log.d("main", String.valueOf(cel));
+
+
+                        Log.d("arraylength", String.valueOf(userArray.length()));
+
+                        // fetch JSONObject named employee
+
+                        for(int i=0;i<userArray.length();i++)
+                        {
+                            JSONObject employee = userArray.getJSONObject(i);
+//                            hospital=employee.getJSONArray("resources").getJSONObject(0).getJSONArray("businessesAtLocation").getJSONObject(0).getJSONObject("businessInfo").get("entityName").toString();
+
+                           weatherapi=employee.getString("description");
+
+                            Log.d("weather",weatherapi);
+                        }
+
+
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                }
+
+                return buffer.toString();
+
+
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } finally {
+                if (connection != null) {
+                    connection.disconnect();
+                }
+                try {
+                    if (reader != null) {
+                        reader.close();
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+            label3.setText(weatherapi);
+
+//            if (pd.isShowing()){
+//                pd.dismiss();
+//            }
 //            txtJson.setText(result);
 //            speed.setText(aaspeed);
 

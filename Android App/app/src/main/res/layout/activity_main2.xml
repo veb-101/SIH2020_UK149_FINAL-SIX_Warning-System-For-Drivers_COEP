@@ -93,49 +93,75 @@
                         <!--android:textColor="@color/black"/>-->
                     <TextView
                         android:id="@+id/toolbar"
-                        android:layout_width="250dp"
-                        android:layout_height="40dp"
+                        android:layout_width="200dp"
+                        android:layout_height="30dp"
                         android:layout_centerHorizontal="true"
-                        android:layout_marginTop="28dp"
-                        android:textColor="@color/black"
+                        android:layout_marginTop="25dp"
+                        android:textColor="@color/white"
+                        android:paddingLeft="3pt"
                         android:background="@drawable/border"
                         android:ems="10"
-                        android:hint="Enter source"
+                        android:gravity="center_vertical"
+                        android:hint="  Enter Source"
                         android:onClick="getAddress"
-                        android:textColorHint="@color/black"
-
+                        android:textColorHint="@color/white"
                         android:textAppearance="@style/TextAppearance.AppCompat" />
 
                     <TextView
                         android:id="@+id/toolbar2"
-                        android:layout_width="250dp"
-                        android:layout_height="40dp"
+                        android:layout_width="200dp"
+                        android:layout_height="30dp"
                         android:onClick="getAddress"
                         android:background="@drawable/border"
-
-                        android:textColor="@color/black"
+                        android:gravity="center_vertical"
+                        android:textColor="@color/white"
+                        android:paddingLeft="3pt"
                         android:layout_alignLeft="@+id/toolbar"
                         android:layout_alignStart="@+id/toolbar"
                         android:layout_below="@+id/toolbar"
                         android:layout_marginTop="11dp"
                         android:ems="10"
-                        android:hint="Enter destination"
-                        android:textColorHint="@color/black"
+                        android:hint="  Enter destination"
+                        android:textColorHint="@color/white"
+
+
                         />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+<!--                    <TextView-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
 
-                        android:id="@+id/text1"
-                        android:background="@android:color/transparent"
-                        android:textColor="@color/black"
-                        />
+<!--                        android:id="@+id/text1"-->
+<!--                        android:background="@android:color/transparent"-->
+<!--                        android:textColor="@color/black"-->
+<!--                        />-->
 
 
 
                     <!--android:inputType="textPassword" />-->
+                    <TextView
+                        android:id="@+id/label1"
+                        android:layout_width ="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="50dp"
+                        android:text="Current Speed"
+                        android:textColor="@color/white"/>
+                    <TextView
+                        android:id="@+id/label2"
+                        android:layout_width ="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="-17dp"
+                        android:layout_marginLeft="250dp"
+                        android:text="Speed Limit"
+                        android:textColor="@color/white"/>
+                    <TextView
+                        android:id="@+id/label3"
+                        android:layout_width ="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="350dp"
+                        android:text=""
 
+                        android:textColor="@color/white"/>
 
 
                 </com.google.android.material.appbar.AppBarLayout>
@@ -144,24 +170,31 @@
 
                 <Button
                     android:id="@+id/create1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Current speed"
-                    android:layout_marginTop="200dp"
-                    android:layout_marginLeft="270dp"
-                    android:background="@color/white"
-                    android:textColor="@color/blue"/>
+                    android:layout_width="90dp"
+                    android:layout_height="90dp"
+                    android:text="0"
+
+                    android:textAlignment="center"
+                    android:layout_marginTop="170dp"
+                    android:layout_marginLeft="0dp"
+                    android:textSize="30dp"
+                    android:background="@drawable/circleshape"
+                    android:textColor="@color/green"
+                    android:backgroundTint="@color/white"
+
+                    />
+
 
                 <Button
                     android:id="@+id/create2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Speed limit"
-                    android:layout_marginTop="270dp"
+                    android:layout_width="90dp"
+                    android:layout_height="90dp"
                     android:layout_marginLeft="270dp"
-                    android:background="@color/white"
-                    android:textColor="@color/blue"/>
-
+                    android:layout_marginTop="170dp"
+                    android:background="@drawable/circleshap1"
+                    android:text="0"
+                    android:textSize="30dp"
+                    android:textColor="@color/white" />
 
                 <Button
                     android:id="@+id/navigation"
@@ -170,7 +203,8 @@
                     android:text="Navigation"
                     android:layout_marginTop="350dp"
                     android:layout_marginLeft="270dp"
-                    android:background="@color/white"
+                    android:background="@drawable/border"
+                    android:visibility="gone"
                     android:textColor="@color/blue"/>
 
 
@@ -179,23 +213,35 @@
 
                 <Button
                     android:id="@+id/simulation"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Simulation"
-                    android:layout_marginTop="410dp"
-                    android:layout_marginLeft="270dp"
-                    android:background="@color/white"
-                    android:textColor="@color/blue"/>
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
 
-                <Button
-                    android:id="@+id/personCount"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Person Count"
-                    android:layout_marginTop="80dp"
-                    android:layout_marginLeft="270dp"
-                    android:background="@color/white"
-                    android:textColor="@color/blue"/>
+                    android:text="GO"
+                    android:layout_marginTop="470dp"
+                    android:layout_marginLeft="280dp"
+                    android:background="@drawable/go"
+                    android:textColor="@color/white"
+                    android:padding="15dp"
+
+                    />
+
+<!--                <com.google.android.material.floatingactionbutton.FloatingActionButton-->
+<!--                    android:id="@+id/simulation"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_gravity="bottom|right"-->
+<!--                    android:layout_margin="16dp"-->
+<!--                    -->
+<!--                    android:text="GO"-->
+<!--                    android:layout_marginTop="450dp"-->
+<!--                    android:layout_marginLeft="0dp"-->
+<!--                    android:background="@drawable/go"-->
+<!--                    android:textColor="@color/white"-->
+<!--                    android:padding="15dp"-->
+
+<!--                  />-->
+
+
 
                 <!--<Button-->
                     <!--android:id="@+id/lastmile"-->
@@ -225,29 +271,28 @@
 <!--                    android:text="Add place"-->
 <!--                    android:textColor="@color/blue" />-->
 
+
                 <fragment
                     android:id="@+id/mapfragment"
                     android:name="com.here.android.mpa.mapping.MapFragment"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="543dp"
+                    android:layout_marginTop="@dimen/activity_horizontal_margin"
                     sothree:context="com.here.android.example.guidance.MapFragmentView3" />
-
 
                 <com.google.android.material.floatingactionbutton.FloatingActionButton
                     android:id="@+id/fab"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/ic_my_location_black_24dp"
-                    app:elevation="6dp"
-                    app:pressedTranslationZ="12dp"
-                    app:layout_anchor="@id/mapfragment"
-                    android:layout_marginLeft="16dp"
+                    android:layout_marginLeft="10dp"
                     android:layout_marginRight="16dp"
-                    android:layout_marginBottom="46dp"
+                    android:layout_marginBottom="150dp"
+                    android:src="@drawable/ic_my_location_black_24dp"
                     app:backgroundTint="#ffffff"
+                    app:elevation="6dp"
+                    app:layout_anchor="@id/mapfragment"
                     app:layout_anchorGravity="bottom|right|end"
-                    >
-
+                    app:pressedTranslationZ="12dp">
 
 
                 </com.google.android.material.floatingactionbutton.FloatingActionButton>

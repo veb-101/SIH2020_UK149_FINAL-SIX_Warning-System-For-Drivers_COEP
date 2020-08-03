@@ -5,9 +5,11 @@
     android:innerRadiusRatio="3"
     android:shape="ring"
     android:thickness="4dp"
-    android:useLevel="false">
+    android:useLevel="false"
+    >
 
-    <solid android:color="@color/white"/>
+    <solid
+        android:color="@color/white"
+        android:thickness="3dp"/>
 
 </shape>
-
